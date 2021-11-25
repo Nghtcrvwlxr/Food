@@ -110,7 +110,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // Modal
 
     const modalOpen = document.querySelectorAll('[data-modal]'),
-          modalClose = document.querySelector('[data-close]'),
           modal = document.querySelector('.modal');
 
     function openModal() {
@@ -130,10 +129,8 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     }
 
-    modalClose.addEventListener('click', closeModal);
-
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+        if (e.target === modal || e.target.getAttribute('data-close') == '') {
             closeModal();
         }
     });
@@ -146,7 +143,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     
-    const modalTimerId = setTimeout(openModal, 5000);
+    const modalTimerId = setTimeout(openModal, 50000);
 
     function showModalByScroll () {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -237,7 +234,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form');
 
     const message = {
-        loading: 'Loading',
+        loading: 'icons/spinner.svg',
         success: 'Thanks! We will write back to you soon',
         failure: 'Something went wrong'
     };
@@ -250,10 +247,13 @@ window.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const statusMessage = document.createElement('div');
-            statusMessage.classList.add('status');
-            statusMessage.textContent = message.loading;
-            form.append(statusMessage);
+            const statusMessage = document.createElement('img');
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            form.insertAdjacentElement('afterend', statusMessage);
 
             const request = new XMLHttpRequest();
 
@@ -274,16 +274,41 @@ window.addEventListener('DOMContentLoaded', () => {
             request.addEventListener('load', () => {
                 if (request.status === 200) {
                     console.log(request.response);
-                    statusMessage.textContent = message.success;
+                    showThanksModal(message.success);
+                    statusMessage.style = 'display: none;';
                     form.reset();
-                    setTimeout(() => {
-                        statusMessage.remove();
-                    }, 3000);
                 } else {
-                    statusMessage.textContent = message.failure;
+                    showThanksModal(message.failure);
                 }
             });
         });
+    }
+
+
+
+    function showThanksModal(message) {
+        const previousModalDialog = document.querySelector('.modal__dialog');
+
+        previousModalDialog.classList.add('hide');
+        openModal();
+
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+            <div class="modal__content">
+                <div class="modal__close" data-close>&times;</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
+
+        document.querySelector('.modal').append(thanksModal);
+
+        setTimeout(() => {
+            thanksModal.remove();
+            previousModalDialog.classList.add('show');
+            previousModalDialog.classList.remove('hide');
+            closeModal();
+        }, 3000);
     }
 
 
