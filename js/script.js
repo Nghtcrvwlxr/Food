@@ -324,4 +324,160 @@ window.addEventListener('DOMContentLoaded', () => {
     fetch('http://localhost:3000/menu')
         .then(data => data.json())
         .then(res => console.log(res));
+
+    
+    
+    // Slider
+
+    /* const prevBtn = document.querySelector('.offer__slider-prev'),
+          nextBtn = document.querySelector('.offer__slider-next'),
+          currentNum = document.querySelector('#current'),
+          totalNum = document.querySelector('#total'),
+          slides = document.querySelectorAll('.offer__slide');
+
+    let slideIndex = 1;
+
+
+
+    currentNum.textContent = '0' + slideIndex;
+
+    totalNum.textContent = '0' + slides.length;
+
+
+
+    function showSlides() {
+
+        if (slideIndex < 10) {
+            slideIndex = '0' + slideIndex;
+        }
+
+        currentNum.textContent = slideIndex;
+
+        slides.forEach((item, i) => {
+            if (i + 1 === +slideIndex) {
+                item.classList.add('show', 'fade');
+                item.classList.remove('hide');
+            } else {
+                item.classList.add('hide');
+                item.classList.remove('show');
+            }
+        });
+    }
+
+    showSlides();
+
+    
+
+    prevBtn.addEventListener('click', () => {
+
+        if (slideIndex <= 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex = --slideIndex;
+        }  
+
+        showSlides();
+    });
+
+
+
+    nextBtn.addEventListener('click', () => {
+
+        if (slideIndex >= slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex = ++slideIndex;
+        }  
+
+        showSlides();
+    }); */
+
+
+
+    const prevBtn = document.querySelector('.offer__slider-prev'),
+          nextBtn = document.querySelector('.offer__slider-next'),
+          currentNum = document.querySelector('#current'),
+          totalNum = document.querySelector('#total'),
+          slides = document.querySelectorAll('.offer__slide'),
+          slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+          width = window.getComputedStyle(slidesWrapper).width;
+
+    const slidesField = document.createElement('div');
+    slidesField.classList.add('offer__slider-inner');
+    slidesWrapper.append(slidesField);
+
+    slides.forEach((item) => {
+        slidesField.append(item);
+    });
+
+    let slideIndex = 1;
+    let offset = 0;
+
+
+
+    if (slides.length < 10) {
+        totalNum.textContent = `0${slides.length}`;
+        currentNum.textContent = `0${slideIndex}`;
+    } else {
+        totalNum.textContent = slides.length;
+        currentNum.textContent = slideIndex;
+    }
+
+
+
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0.5s all';
+
+    slidesWrapper.style.overflow = 'hidden';
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+
+
+    nextBtn.addEventListener('click', () => {
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
+            slideIndex = 1;
+        } else {
+            slideIndex++;
+        }
+
+        if (slides.length < 10) {
+            currentNum.textContent = `0${slideIndex}`;
+        } else {
+            currentNum.textContent = slideIndex;
+        }
+    });
+    
+    prevBtn.addEventListener('click', () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        if (slides.length < 10) {
+            currentNum.textContent = `0${slideIndex}`;
+        } else {
+            currentNum.textContent = slideIndex;
+        }
+    });
 });
