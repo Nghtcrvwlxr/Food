@@ -1,83 +1,17 @@
-function slider() {
+function slider({container, slide, nextArrow, prevArrow, totalCounter, currentCounter, wrapper, field}) {
 
-    // Slider
-
-    /* const prevBtn = document.querySelector('.offer__slider-prev'),
-          nextBtn = document.querySelector('.offer__slider-next'),
-          currentNum = document.querySelector('#current'),
-          totalNum = document.querySelector('#total'),
-          slides = document.querySelectorAll('.offer__slide');
-
-    let slideIndex = 1;
-
-
-
-    currentNum.textContent = '0' + slideIndex;
-
-    totalNum.textContent = '0' + slides.length;
-
-
-
-    function showSlides() {
-
-        if (slideIndex < 10) {
-            slideIndex = '0' + slideIndex;
-        }
-
-        currentNum.textContent = slideIndex;
-
-        slides.forEach((item, i) => {
-            if (i + 1 === +slideIndex) {
-                item.classList.add('show', 'fade');
-                item.classList.remove('hide');
-            } else {
-                item.classList.add('hide');
-                item.classList.remove('show');
-            }
-        });
-    }
-
-    showSlides();
-
-    
-
-    prevBtn.addEventListener('click', () => {
-
-        if (slideIndex <= 1) {
-            slideIndex = slides.length;
-        } else {
-            slideIndex = --slideIndex;
-        }  
-
-        showSlides();
-    });
-
-
-
-    nextBtn.addEventListener('click', () => {
-
-        if (slideIndex >= slides.length) {
-            slideIndex = 1;
-        } else {
-            slideIndex = ++slideIndex;
-        }  
-
-        showSlides();
-    }); */
-
-
-
-    const prevBtn = document.querySelector('.offer__slider-prev'),
-          nextBtn = document.querySelector('.offer__slider-next'),
-          currentNum = document.querySelector('#current'),
-          totalNum = document.querySelector('#total'),
-          slides = document.querySelectorAll('.offer__slide'),
-          slider = document.querySelector('.offer__slider'),
-          slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+    const prevBtn = document.querySelector(prevArrow),
+          nextBtn = document.querySelector(nextArrow),
+          currentNum = document.querySelector(currentCounter),
+          totalNum = document.querySelector(totalCounter),
+          slides = document.querySelectorAll(slide),
+          slider = document.querySelector(container),
+          slidesWrapper = document.querySelector(wrapper),
           width = window.getComputedStyle(slidesWrapper).width;
 
     const slidesField = document.createElement('div');
-    slidesField.classList.add('offer__slider-inner');
+
+    slidesField.classList.add(field);
     slidesWrapper.append(slidesField);
 
     slides.forEach((item) => {
@@ -236,4 +170,4 @@ function slider() {
     });
 }
 
-module.exports = slider;
+export default slider;

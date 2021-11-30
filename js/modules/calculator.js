@@ -1,6 +1,4 @@
 function calculator() {
-    
-    // Calcuator
 
     const result = document.querySelector('.calculating__result span');
 
@@ -113,8 +111,6 @@ function calculator() {
 
             calcTotal();
         });
-
-        
     }
 
     getDynamicInformation('#height');
@@ -122,4 +118,4 @@ function calculator() {
     getDynamicInformation('#age');
 }
 
-module.exports = calculator;
+export default calculator;
